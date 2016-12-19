@@ -1,38 +1,54 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Партнерский кабинет");
-?><? 
+$APPLICATION->SetTitle("Партнерский кабинет"); 
+
+global $USER;
 // Проверяем, что пользователь является оператором хотя бы у одного партнера
 $isOperator = array();
-$arFilter = array(
-	'IBLOCK_ID' => 5    
-	);
-$res = CIBlockElement::GetList(false, $arFilter, array(
-	'IBLOCK_ID',
-	'ID',    
-	'PROPERTY_OPERATOR'
-));
-while ($ar_props = $res->Fetch())
+if ($USER->GetID()) // Если пользователь авторизован
 {
-	if($ar_props['PROPERTY_OPERATOR_VALUE']==$_SESSION['SESS_AUTH']['USER_ID'])
+	$arFilter = array(
+		'IBLOCK_ID' => 5,
+	'PROPERTY_OPERATOR' => $USER->GetID()     
+		);
+	$res = CIBlockElement::GetList(false, $arFilter, array(
+		'IBLOCK_ID',
+		'ID',    
+		'PROPERTY_OPERATOR'
+	));
+	while ($ar_props = $res->Fetch())
 	{
-		$isOperator[] = $ar_props['PROPERTY_OPERATOR_VALUE'];
-	}    
+		$isOperator[] = $ar_props['ID'];
+	}
 }
+// Фильтруем товары в инфоблоке   
+	$arFilter = array(
+		'IBLOCK_ID' => 2,
+		'PROPERTY_PARTNER' => $isOperator     
+		);
+	$res = CIBlockElement::GetList(false, $arFilter, array(
+		'IBLOCK_ID',
+		'ID',
+	));
+	while ($ar_props = $res->Fetch())
+	{
+		$itemsList[] = $ar_props['ID'];            
+	}
 
 if ($isOperator): 
-?> <?
+
 GLOBAL $arrFilter;
 if (!is_array($arrFilter))
 	$arrFilter = array();
-$arrFilter['PROPERTY_OPERATOR'] = $_SESSION['SESS_AUTH']['USER_ID']; // Фильтр по имени пользователя
-?> <?$APPLICATION->IncludeComponent(
-	"bitrix:news.list",
-	"",
+$arrFilter['ACTIVE'] = array("Y","N");
+$arrFilter['ID'] = $itemsList;
+?><?$APPLICATION->IncludeComponent(
+	"custom:news.list",
+	"kabinet",
 	Array(
 		"ACTIVE_DATE_FORMAT" => "d.m.Y",
 		"ADD_SECTIONS_CHAIN" => "Y",
-		"AJAX_MODE" => "N",
+		"AJAX_MODE" => "Y",
 		"AJAX_OPTION_ADDITIONAL" => "",
 		"AJAX_OPTION_HISTORY" => "N",
 		"AJAX_OPTION_JUMP" => "N",
@@ -42,18 +58,18 @@ $arrFilter['PROPERTY_OPERATOR'] = $_SESSION['SESS_AUTH']['USER_ID']; // Филь
 		"CACHE_TIME" => "36000000",
 		"CACHE_TYPE" => "A",
 		"CHECK_DATES" => "Y",
-		"DETAIL_URL" => "detail.php?ID=#ELEMENT_ID#",
+		"DETAIL_URL" => "",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"DISPLAY_DATE" => "Y",
 		"DISPLAY_NAME" => "Y",
 		"DISPLAY_PICTURE" => "Y",
-		"DISPLAY_PREVIEW_TEXT" => "Y",
+		"DISPLAY_PREVIEW_TEXT" => "N",
 		"DISPLAY_TOP_PAGER" => "N",
-		"FIELD_CODE" => array("",""),
+		"FIELD_CODE" => array("","ACTIVE",""),
 		"FILTER_NAME" => "arrFilter",
 		"HIDE_LINK_WHEN_NO_DETAIL" => "N",
-		"IBLOCK_ID" => "5",
-		"IBLOCK_TYPE" => "partners",
+		"IBLOCK_ID" => "2",
+		"IBLOCK_TYPE" => "catalog",
 		"INCLUDE_IBLOCK_INTO_CHAIN" => "Y",
 		"INCLUDE_SUBSECTIONS" => "Y",
 		"MESSAGE_404" => "",
@@ -68,7 +84,7 @@ $arrFilter['PROPERTY_OPERATOR'] = $_SESSION['SESS_AUTH']['USER_ID']; // Филь
 		"PARENT_SECTION" => "",
 		"PARENT_SECTION_CODE" => "",
 		"PREVIEW_TRUNCATE_LEN" => "",
-		"PROPERTY_CODE" => array(""),
+		"PROPERTY_CODE" => array("",""),
 		"SET_BROWSER_TITLE" => "Y",
 		"SET_LAST_MODIFIED" => "N",
 		"SET_META_DESCRIPTION" => "Y",
@@ -81,7 +97,6 @@ $arrFilter['PROPERTY_OPERATOR'] = $_SESSION['SESS_AUTH']['USER_ID']; // Филь
 		"SORT_ORDER1" => "DESC",
 		"SORT_ORDER2" => "ASC"
 	)
-);?>
-<?else: print "Доступ запрещен!";
+);?><br><?else: print "Доступ запрещен!";
 endif;
-?> <br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
