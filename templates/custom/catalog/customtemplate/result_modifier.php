@@ -1,8 +1,8 @@
 <?
 $partnerIblockId = 5;
-// из arParam[IBLOCK_ID] и arResult[VARIABLES][ELEMENT_CODE] получаем нужные значения
-$iblock_id = $arParams['IBLOCK_ID']; // 2, инфоблок товаров
-$element_code = $arResult['VARIABLES']['ELEMENT_CODE']; // символьный код товара
+// РёР· arParam[IBLOCK_ID] Рё arResult[VARIABLES][ELEMENT_CODE] РїРѕР»СѓС‡Р°РµРј РЅСѓР¶РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
+$iblock_id = $arParams['IBLOCK_ID']; // 2, РёРЅС„РѕР±Р»РѕРє С‚РѕРІР°СЂРѕРІ
+$element_code = $arResult['VARIABLES']['ELEMENT_CODE']; // СЃРёРјРІРѕР»СЊРЅС‹Р№ РєРѕРґ С‚РѕРІР°СЂР°
 
 $arFilter = array(
 	'IBLOCK_ID' => $iblock_id,        
@@ -17,7 +17,7 @@ $ar_result = $db_list->Fetch();
 $partnerId = $ar_result['PROPERTY_PARTNER_VALUE'];
 unset($arFilter, $db_list, $ar_result);
     
-// По значению элемента и инфоблоку партнера получаем описание и условия доставки
+// РџРѕ Р·РЅР°С‡РµРЅРёСЋ СЌР»РµРјРµРЅС‚Р° Рё РёРЅС„РѕР±Р»РѕРєСѓ РїР°СЂС‚РЅРµСЂР° РїРѕР»СѓС‡Р°РµРј РѕРїРёСЃР°РЅРёРµ Рё СѓСЃР»РѕРІРёСЏ РґРѕСЃС‚Р°РІРєРё
 if ($partnerId)
 {
 	$arFilter = array(
