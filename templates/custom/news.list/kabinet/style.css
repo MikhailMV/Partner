@@ -69,3 +69,6 @@ div.news-list img.preview_picture
 .c-tab.is-active {
 	display: block;
 }
+.hide{
+	display: none;
+}

@@ -18,7 +18,7 @@ $this->setFrameMode(true);
 		<div id="partner-tabs" class="c-tabs no-js">
 			<div class="c-tabs-nav">
 				<?foreach($arResult['PARTNER'] as $partnerId => $partnerName):?>
-					<a href="#" class="c-tabs-nav__link">            
+					<a href="#" class="c-tabs-nav__link" onclick="showGoods('<?=$partnerId?>')">            
 						<?echo $partnerName;?>
 					</a>
 				<?endforeach;?>   
@@ -39,15 +39,15 @@ $this->setFrameMode(true);
 								<?if($arParams["DISPLAY_PICTURE"]!="N" && is_array($arItem["PREVIEW_PICTURE"])):?>
 									<?if(!$arParams["HIDE_LINK_WHEN_NO_DETAIL"] || ($arItem["DETAIL_TEXT"] && $arResult["USER_HAVE_ACCESS"])):?>
 										<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><img
-												class="preview_picture"
-												border="0"
-												src="<?=$arItem["PREVIEW_PICTURE"]["SRC"]?>"
-												width="<?=$arItem["PREVIEW_PICTURE"]["WIDTH"]?>"
-												height="<?=$arItem["PREVIEW_PICTURE"]["HEIGHT"]?>"
-												alt="<?=$arItem["PREVIEW_PICTURE"]["ALT"]?>"
-												title="<?=$arItem["PREVIEW_PICTURE"]["TITLE"]?>"
-												style="float:left"
-												/></a>
+											class="preview_picture"
+											border="0"
+											src="<?=$arItem["PREVIEW_PICTURE"]["SRC"]?>"
+											width="<?=$arItem["PREVIEW_PICTURE"]["WIDTH"]?>"
+											height="<?=$arItem["PREVIEW_PICTURE"]["HEIGHT"]?>"
+											alt="<?=$arItem["PREVIEW_PICTURE"]["ALT"]?>"
+											title="<?=$arItem["PREVIEW_PICTURE"]["TITLE"]?>"
+											style="float:left"
+											/></a>
 									<?else:?>
 										<img
 											class="preview_picture"
@@ -58,7 +58,7 @@ $this->setFrameMode(true);
 											alt="<?=$arItem["PREVIEW_PICTURE"]["ALT"]?>"
 											title="<?=$arItem["PREVIEW_PICTURE"]["TITLE"]?>"
 											style="float:left"
-											/>
+										/>
 									<?endif;?>
 								<?endif?>
 								<?if($arParams["DISPLAY_DATE"]!="N" && $arItem["DISPLAY_ACTIVE_FROM"]):?>
@@ -94,14 +94,15 @@ $this->setFrameMode(true);
 								<?endforeach;?>
 								<a href="" class="change_button" onclick="changeActivity('<?=$arItem['ID']?>')">Изменить активность</a>
 										
-							</p>							
+								</p>
 						<?endforeach;?>
 						<?if($arParams["DISPLAY_BOTTOM_PAGER"]):?>
 							<br /><?=$arResult["NAV_STRING"]?>
 						<?endif;?>
 					</div>					
 				</div>
-			</div>			 
+			</div>
 		</div>
 	</div>
 </div>
+<div id="toLoad"></div>

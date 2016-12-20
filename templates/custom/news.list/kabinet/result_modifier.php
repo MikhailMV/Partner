@@ -51,7 +51,7 @@ foreach($arResult["ITEMS"] as $itemDescription)
 			if($itemDescription['ID'] == $itemId)
 			{
 				$itemDescription["PARTNER_ID"] = $partnerId;
-				$filterItems[] = $itemDescription;
+				$filterItems[] = $itemDescription;                
 			}
 		}
 	} 

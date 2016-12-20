@@ -16,24 +16,21 @@ if ($USER->GetID()) // Если пользователь авторизован
 		'ID',    
 		'PROPERTY_OPERATOR'
 	));
-	while ($ar_props = $res->Fetch())
-	{
-		$isOperator[] = $ar_props['ID'];
-	}
+    $isOperator = $res->Fetch(); // Выбираем данные по первому партнеру	
 }
 // Фильтруем товары в инфоблоке   
-	$arFilter = array(
-		'IBLOCK_ID' => 2,
-		'PROPERTY_PARTNER' => $isOperator     
-		);
-	$res = CIBlockElement::GetList(false, $arFilter, array(
-		'IBLOCK_ID',
-		'ID',
-	));
-	while ($ar_props = $res->Fetch())
-	{
-		$itemsList[] = $ar_props['ID'];            
-	}
+$arFilter = array(
+	'IBLOCK_ID' => 2,
+	'PROPERTY_PARTNER' => $isOperator     
+	);
+$res = CIBlockElement::GetList(false, $arFilter, array(
+	'IBLOCK_ID',
+	'ID',
+));
+while ($ar_props = $res->Fetch())
+{
+	$itemsList[] = $ar_props['ID'];            
+}
 
 if ($isOperator): 
 
